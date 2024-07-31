@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import List from "./List.jsx";
+import Item from "./Item.jsx";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState([
+    { id: 1, content: "Hello World", name: "Kaung" },
+    { id: 2, content: "Hello World", name: "Myat" },
+    { id: 3, content: "Hello World", name: "Thway" },
+  ]);
+
+  const remove = id => {
+    setData(data.filter(item => item.id !== id));
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ margin: "600px auto" }}>
+      <h1>Yaycha</h1>
+      <List>
+          {
+            data.map(item => {
+              return <Item key={item.id} item={item} remove={remove} />
+            })
+          }
+      </List>
+    </div>
+  );
 }
 
-export default App
+export default App;
