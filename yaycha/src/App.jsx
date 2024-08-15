@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import List from "./List.jsx";
 import Item from "./Item.jsx";
 import Form from "./Form";
+import { AppContext } from "./ThemedApp.jsx";
 
 function App() {
+  const { mood, setMood } = useContext(AppContext);
   const [showForm, setShowForm] = useState(false);
   const [data, setData] = useState([
     { id: 1, content: "Hello World", name: "Kaung" },
@@ -21,36 +23,52 @@ function App() {
   };
 
   return (
-    <div style={{ margin: "0 auto" }}>
-      <h1
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        Yaycha
-        <button
-          onClick={() => {
-            setShowForm(!showForm);
-          }}
+    <div
+      style={{
+        paddingTop: 20,
+        background: mood === "dark" ? "black" : "white",
+        color: mood === "dark" ? "white" : "black",
+      }}
+    >
+      <div style={{ margin: "0 auto" }}>
+        <h1
           style={{
-            width: 32,
-            height: 32,
-            borderRadius: 50,
-            background: showForm ? "green" : "red",
-            color: "white",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          {showForm ? "*" : "+"}
+          Yaycha
+          <button
+            onClick={() => {
+              setShowForm(!showForm);
+            }}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 50,
+              background: showForm ? "green" : "red",
+              color: "white",
+            }}
+          >
+            {showForm ? "*" : "+"}
+          </button>
+        </h1>
+        <button
+          onClick={() => {
+            setMood(mood === "dark" ? "light" : "dark");
+          }}
+          style={{ margin: 10 }}
+        >
+          Click
         </button>
-      </h1>
-      {showForm && <Form add={add} />}
-      <List>
-        {data.map((item) => {
-          return <Item key={item.id} item={item} remove={remove} />;
-        })}
-      </List>
+        {showForm && <Form add={add} />}
+        <List>
+          {data.map((item) => {
+            return <Item key={item.id} item={item} remove={remove} />;
+          })}
+        </List>
+      </div>
     </div>
   );
 }
