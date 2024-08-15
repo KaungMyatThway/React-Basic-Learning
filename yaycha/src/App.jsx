@@ -1,76 +1,50 @@
-import { useContext, useState } from "react";
-import List from "./List.jsx";
-import Item from "./Item.jsx";
-import Form from "./Form";
-import { AppContext } from "./ThemedApp.jsx";
+import { useState } from "react";
 
-function App() {
-  const { mood, setMood } = useContext(AppContext);
-  const [showForm, setShowForm] = useState(false);
-  const [data, setData] = useState([
-    { id: 1, content: "Hello World", name: "Kaung" },
-    { id: 2, content: "Hello World", name: "Myat" },
-    { id: 3, content: "Hello World", name: "Thway" },
-  ]);
+import { Box, Container } from "@mui/material";
 
-  const remove = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
+import Header from "./components/Header";
+import Form from "./components/Form";
+import Item from "./components/Item";
 
-  const add = (content, name) => {
-    const id = data[data.length - 1].id + 1;
-    setData([...data, { id, content, name }]);
-  };
+import { useApp } from "./ThemedApp";
 
-  return (
-    <div
-      style={{
-        paddingTop: 20,
-        background: mood === "dark" ? "black" : "white",
-        color: mood === "dark" ? "white" : "black",
-      }}
-    >
-      <div style={{ margin: "0 auto" }}>
-        <h1
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          Yaycha
-          <button
-            onClick={() => {
-              setShowForm(!showForm);
-            }}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 50,
-              background: showForm ? "green" : "red",
-              color: "white",
-            }}
-          >
-            {showForm ? "*" : "+"}
-          </button>
-        </h1>
-        <button
-          onClick={() => {
-            setMood(mood === "dark" ? "light" : "dark");
-          }}
-          style={{ margin: 10 }}
-        >
-          Click
-        </button>
-        {showForm && <Form add={add} />}
-        <List>
-          {data.map((item) => {
-            return <Item key={item.id} item={item} remove={remove} />;
-          })}
-        </List>
-      </div>
-    </div>
-  );
+export default function App() {
+	const { showForm } = useApp();
+
+	const [data, setData] = useState([
+		{ id: 3, content: "Yay, interesting.", name: "Chris" },
+		{ id: 2, content: "React is fun.", name: "Bob" },
+		{ id: 1, content: "Hello, World!", name: "Alice" },
+	]);
+
+	const remove = id => {
+		setData(data.filter(item => item.id !== id));
+	};
+
+	const add = (content, name) => {
+		const id = data[0].id + 1;
+		setData([{ id, content, name }, ...data]);
+	};
+
+	return (
+		<Box sx={{ width:1600,minHeight:1500 }}>
+			<Header />
+
+			<Container
+				maxWidth="md"
+				sx={{ mt: 4 }}>
+				{showForm && <Form add={add} />}
+
+				{data.map(item => {
+					return (
+						<Item
+							key={item.id}
+							item={item}
+							remove={remove}
+						/>
+					);
+				})}
+			</Container>
+		</Box>
+	);
 }
-
-export default App;
