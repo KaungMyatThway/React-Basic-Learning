@@ -11,14 +11,12 @@ export default function Template() {
 	const { globalMsg, setGlobalMsg } = useApp();
 
 	return (
-		<Box>
+		<Box sx={{ width:1600 }}>
 			<Header />
 			<AppDrawer />
 
 			<Container
-				maxWidth="sm"
-                
-				sx={{ mt: 4 }}>
+				sx={{ mt: 4,minHeight:1600 }}>
 				<Outlet />
 			</Container>
 
